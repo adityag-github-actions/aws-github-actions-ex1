@@ -1,0 +1,30 @@
+name: aws-github-actions-ex1
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::637423605531:role/github-actions-aws-role
+
+      - name: AWS 
+        run: |
+          Install-Module -Name AWS.Tools.EC2 -Force
+          Get-EC2Vpc
+        shell: pwsh
